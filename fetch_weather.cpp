@@ -82,7 +82,7 @@ static void weatherTask(void*) {
 }
 
 void fetchWeatherStart() {
-    xTaskCreatePinnedToCore(weatherTask, "weather", 8192, nullptr, 1, nullptr, 0);
+    xTaskCreatePinnedToCore(weatherTask, "weather", 10240, nullptr, 1, nullptr, 0);
 }
 
 void fetchWeatherNow() { forceNow = true; }
