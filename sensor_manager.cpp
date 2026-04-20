@@ -31,6 +31,7 @@ void sensorReadIfDue() {
         return;
     }
 
+    // g_sensor: no mutex — written and read only on Core 1 (see data_store.h)
     g_sensor.temp_c       = t;
     g_sensor.humidity_pct = h;
     g_sensor.valid        = true;
