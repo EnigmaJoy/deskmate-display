@@ -1,6 +1,7 @@
 #include "display_manager.h"
 #include "wifi_manager.h"
 #include "data_store.h"
+#include "sensor_manager.h"
 
 enum class AppState { WIFI_SETUP, CONNECTING, DASHBOARD, ERROR };
 static AppState state    = AppState::CONNECTING;
@@ -16,6 +17,7 @@ void setup() {
     Serial.begin(115200);
     displayInit();
     dataStoreInit();
+    sensorInit();
 
     wifiManagerInit(onPortalActive);
 
@@ -33,5 +35,6 @@ void setup() {
 
 void loop() {
     if (state != AppState::DASHBOARD) return;
+    sensorReadIfDue();
     delay(33);
 }
