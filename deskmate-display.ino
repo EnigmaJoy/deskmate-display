@@ -1,5 +1,6 @@
 #include "display_manager.h"
 #include "wifi_manager.h"
+#include "data_store.h"
 
 enum class AppState { WIFI_SETUP, CONNECTING, DASHBOARD, ERROR };
 static AppState state    = AppState::CONNECTING;
@@ -14,6 +15,7 @@ void onPortalActive() {
 void setup() {
     Serial.begin(115200);
     displayInit();
+    dataStoreInit();
 
     wifiManagerInit(onPortalActive);
 
