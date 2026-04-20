@@ -45,7 +45,7 @@ LGFX::LGFX() {
         auto cfg = _light_instance.config();
         cfg.pin_bl      = 2;
         cfg.invert      = false;
-        cfg.freq        = 44100;
+        cfg.freq        = 10000;
         cfg.pwm_channel = 7;
         _light_instance.config(cfg);
     }
@@ -76,7 +76,11 @@ void displayInit() {
     lcd.setBrightness(200);
     canvas.setPsram(true);
     canvas.setColorDepth(16);
-    canvas.createSprite(800, 480);
+    void* buf = canvas.createSprite(800, 480);
+    if (!buf) {
+        Serial.println("[Display] FATAL: sprite alloc failed - check PSRAM");
+        while (true) { delay(1000); }
+    }
 }
 
 void displayFill(uint32_t color) {
