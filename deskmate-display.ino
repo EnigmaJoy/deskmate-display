@@ -4,6 +4,7 @@
 #include "sensor_manager.h"
 #include "touch_manager.h"
 #include "ui_widgets.h"
+#include "fetch_weather.h"
 
 enum class AppState  { WIFI_SETUP, CONNECTING, DASHBOARD, ERROR };
 enum class ViewState { DASHBOARD, DETAIL_WEATHER, DETAIL_CRYPTO, DETAIL_SENSOR };
@@ -39,6 +40,7 @@ void setup() {
 
     touchInit();
     configTzTime("CET-1CEST,M3.5.0,M10.5.0/3", "pool.ntp.org");
+    fetchWeatherStart();
 }
 
 void loop() {
