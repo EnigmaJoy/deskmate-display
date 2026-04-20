@@ -6,6 +6,7 @@ static AppState state    = AppState::CONNECTING;
 static String   errorMsg;
 
 void onPortalActive() {
+    Serial.println("[WiFi] Portal active - connect to Deskmate-Setup");
     state = AppState::WIFI_SETUP;
     showSetupScreen();
 }
