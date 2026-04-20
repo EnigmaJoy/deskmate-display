@@ -8,23 +8,27 @@ static void drawCard(int x, int y, int w, int h) {
 }
 
 // ── STATUS BAR ───────────────────────────────────────────────────────────
-void drawStatusBar(const WeatherData&, const CryptoData&, const SensorData&) {
+// WeatherData/CryptoData/SensorData reserved for future status indicators (e.g. last-fetch age)
+void drawStatusBar(const WeatherData& /*w*/, const CryptoData& /*c*/, const SensorData& /*s*/) {
     canvas.fillRect(0, 0, 800, STATUS_H, COL_WIDGET);
     canvas.drawLine(0, STATUS_H - 1, 800, STATUS_H - 1, COL_BORDER);
 
-    struct tm ti;
-    getLocalTime(&ti);
+    struct tm ti = {};
     static const char* DAYS[]   = {"Dom","Lun","Mar","Mer","Gio","Ven","Sab"};
     static const char* MONTHS[] = {"Gen","Feb","Mar","Apr","Mag","Giu",
                                    "Lug","Ago","Set","Ott","Nov","Dic"};
-    char buf[48];
-    snprintf(buf, sizeof(buf), "%02d:%02d:%02d  %s %d %s %d",
-             ti.tm_hour, ti.tm_min, ti.tm_sec,
-             DAYS[ti.tm_wday], ti.tm_mday,
-             MONTHS[ti.tm_mon], ti.tm_year + 1900);
     canvas.setTextColor(COL_BLUE);
     canvas.setTextSize(1);
-    canvas.drawString(buf, 8, 9);
+    if (!getLocalTime(&ti)) {
+        canvas.drawString("--:--:--  ---", 8, 9);
+    } else {
+        char buf[48];
+        snprintf(buf, sizeof(buf), "%02d:%02d:%02d  %s %d %s %d",
+                 ti.tm_hour, ti.tm_min, ti.tm_sec,
+                 DAYS[ti.tm_wday], ti.tm_mday,
+                 MONTHS[ti.tm_mon], ti.tm_year + 1900);
+        canvas.drawString(buf, 8, 9);
+    }
 
     bool wifiOk = isConnected();
     canvas.setTextColor(wifiOk ? COL_GREEN : COL_RED);
@@ -138,7 +142,7 @@ void drawSensors(const SensorData& d) {
         return;
     }
 
-    char buf[20];
+    char buf[32];
     canvas.setTextColor(COL_SUBTLE);
     canvas.setTextSize(1);
     canvas.drawString("Temperatura", cx, cy + 24);
@@ -260,7 +264,7 @@ void drawSensorDetail(const SensorData& d) {
         return;
     }
 
-    char buf[24];
+    char buf[32];
     canvas.setTextColor(COL_SUBTLE);
     canvas.setTextSize(2);
     canvas.drawString("Temperatura", 80, 80);
