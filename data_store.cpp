@@ -1,4 +1,5 @@
 #include "data_store.h"
+#include <assert.h>
 
 WeatherData       g_weather;
 CryptoData        g_crypto;
@@ -9,4 +10,5 @@ SemaphoreHandle_t crypto_mutex  = nullptr;
 void dataStoreInit() {
     weather_mutex = xSemaphoreCreateMutex();
     crypto_mutex  = xSemaphoreCreateMutex();
+    assert(weather_mutex != nullptr && crypto_mutex != nullptr);
 }
